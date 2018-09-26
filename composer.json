@@ -2,7 +2,7 @@
     "name": "umutkirgoz/prayertimes",
     "description": "Fetches the prayer times",
     "keywords": ["muslim", "prayer", "Turkey"],
-    "license": "",
+    "license": "MIT",
     "authors": [
         {
             "name": "Umut KIRGÖZ",
