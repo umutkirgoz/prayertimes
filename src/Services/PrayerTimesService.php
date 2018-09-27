@@ -6,14 +6,31 @@ use Symfony\Component\DomCrawler\Crawler;
 use UmutKirgoz\PrayerTimes\Repositories\LocationsRepository;
 use UmutKirgoz\PrayerTimes\Repositories\PrayerTimesRepository;
 
+/**
+ *
+ * Class PrayerTimesService
+ * @package UmutKirgoz\PrayerTimes\Services
+ */
 class PrayerTimesService
 {
+    /**
+     * @var LocationsRepository
+     */
     private $locationRepository;
 
+    /**
+     * @var PrayerTimesRepository
+     */
     private $prayerTimesRepository;
 
+    /**
+     * @var array
+     */
     private $data = [];
 
+    /**
+     * @var array
+     */
     private $dataMap = [
         'date',
         'fajr',
@@ -24,6 +41,9 @@ class PrayerTimesService
         'isha'
     ];
 
+    /**
+     * @var array
+     */
     private $monthMap = [
         'Ocak'      =>  '01',
         'Şubat'     =>  '02',
@@ -39,6 +59,10 @@ class PrayerTimesService
         'Aralık'    =>  '12',
     ];
 
+    /**
+     *
+     * PrayerTimesService constructor.
+     */
     public function __construct()
     {
         $this->locationRepository = new LocationsRepository();
@@ -46,6 +70,12 @@ class PrayerTimesService
         $this->prayerTimesRepository = new PrayerTimesRepository();
     }
 
+    /**
+     * @param $countrySlug
+     * @param string|null $citySlug
+     * @param string|null $townSlug
+     * @return array
+     */
     public function get($countrySlug, $citySlug = null, $townSlug = null)
     {
         $locations = $this->locationRepository->get($countrySlug, $citySlug, $townSlug);
@@ -63,6 +93,10 @@ class PrayerTimesService
         return $this->data;
     }
 
+    /**
+     * @param $location
+     * @return array
+     */
     private function getData($location)
     {
         $content = $this->prayerTimesRepository->get($location);
@@ -72,12 +106,16 @@ class PrayerTimesService
         return $this->transformData($datas);
     }
 
+    /**
+     * @param $content
+     * @return array
+     */
     private function parse($content)
     {
         $crawler = new Crawler($content);
 
-        $data = $crawler->filterXPath('//*[@id="tab-1"]/div/table/tbody/tr')->each(function (Crawler $node, $i) {
-            return $node->filter('td')->each(function (Crawler $node, $i) {
+        $data = $crawler->filterXPath('//*[@id="tab-1"]/div/table/tbody/tr')->each(function (Crawler $node) {
+            return $node->filterXPath('//*/td')->each(function (Crawler $node) {
                 return $node->text();
             });
         });
@@ -85,6 +123,10 @@ class PrayerTimesService
         return $data;
     }
 
+    /**
+     * @param $datas
+     * @return array
+     */
     private function transformData($datas)
     {
         $result = [];
@@ -101,6 +143,10 @@ class PrayerTimesService
         return $result;
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     private function getDate($data)
     {
         try {
