@@ -22,7 +22,11 @@ class PrayerTimesRepository
      */
     public function __construct()
     {
-        $this->httpClient = new Client();
+        $this->httpClient = new Client([
+            'headers'   =>  [
+                'User-Agent'    =>  'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+            ]
+        ]);
     }
 
     /**
