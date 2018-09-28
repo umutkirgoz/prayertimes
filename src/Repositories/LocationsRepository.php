@@ -58,7 +58,7 @@ class LocationsRepository
      * @param string $countrySlug
      * @return \stdClass
      */
-    private function getCountry($countrySlug)
+    public function getCountry($countrySlug)
     {
         return $this->data->where('type', 'country')->where('slug', $countrySlug)->first();
     }
@@ -69,7 +69,7 @@ class LocationsRepository
      * @param string $citySlug
      * @return Collection
      */
-    private function getCities($country, $citySlug)
+    public function getCities($country, $citySlug = null)
     {
         $cities = $this->data->where('type', 'city');
         return (null === $citySlug) ? $cities->where('parent_id', $country->id) : $cities->where('slug', $citySlug);
@@ -81,7 +81,7 @@ class LocationsRepository
      * @param string|null $townSlug
      * @return static
      */
-    private function getTowns($cities, $townSlug)
+    public function getTowns($cities, $townSlug = null)
     {
         $cityIds = $cities->pluck('id')->toArray();
         $towns = $this->data->where('type', 'town');

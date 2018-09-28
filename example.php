@@ -19,6 +19,22 @@ $locationRepository = new LocationsRepository();
 
 //$allCountries = $locationRepository->getCountries();
 
+/**
+ * Return country information
+ */
+$turkey = $locationRepository->getCountry('turkiye');
+
+/**
+ * Returns the cities of country
+ */
+$cities = $locationRepository->getCities($turkey);
+
+/**
+ * Return the towns of city
+ */
+$towns = $locationRepository->getTowns($cities->slice(0,2));
+
+
 $prayerTimesService = new PrayerTimesService();
 
 /**
@@ -30,7 +46,7 @@ $prayerTimesService = new PrayerTimesService();
 /**
  * Returns all prayer times of the city's each town
  */
-$prayerTimes = $prayerTimesService->get('turkiye', 'amasya');
+$prayerTimes = $prayerTimesService->get('turkiye', $cities->slice(0,1)->first()->slug);
 
 /**
  * Return the prayer times of given town
