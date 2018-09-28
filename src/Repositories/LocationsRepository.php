@@ -1,8 +1,6 @@
 <?php
 namespace UmutKirgoz\PrayerTimes\Repositories;
 
-use Tightenco\Collect\Support\Collection;
-
 /**
  * Manages the locations
  * Class LocationsRepository
@@ -47,6 +45,15 @@ class LocationsRepository
     }
 
     /**
+     * Returns all countries
+     * @return static
+     */
+    public function getCountries()
+    {
+        return $this->data->where('type', 'country');
+    }
+
+    /**
      * Returns the country
      * @param string $countrySlug
      * @return \stdClass
@@ -57,6 +64,7 @@ class LocationsRepository
     }
 
     /**
+     * Returns the cities of given country
      * @param \stdClass $country
      * @param string $citySlug
      * @return Collection
@@ -68,14 +76,24 @@ class LocationsRepository
     }
 
     /**
-     * @param Collection$cities
-     * @param $townSlug
+     * Returns the towns of given cities
+     * @param Collection $cities
+     * @param string|null $townSlug
      * @return static
      */
     private function getTowns($cities, $townSlug)
     {
         $cityIds = $cities->pluck('id')->toArray();
         $towns = $this->data->where('type', 'town');
-        return (null === $townSlug) ? $towns->whereIn('parent_id', $cityIds) : $towns->where('slug', $townSlug);
+
+        if (null !== $townSlug) {
+            return $towns->where('slug', $townSlug);
+        }
+
+        return $towns->filter(function ($item) use ($cityIds) {
+            if (in_array($item->parent_id, $cityIds)) {
+                return $item;
+            }
+        });
     }
 }
