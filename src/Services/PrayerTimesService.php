@@ -26,19 +26,14 @@ class PrayerTimesService
     /**
      * @var array
      */
-    private $data = [];
-
-    /**
-     * @var array
-     */
     private $dataMap = [
         'date',
-        'fajr',
-        'sun',
-        'dhuhr',
-        'asr',
-        'maghrib',
-        'isha'
+        'imsak',
+        'gunes',
+        'ogle',
+        'ikindi',
+        'aksam',
+        'yatsi'
     ];
 
     /**
@@ -80,17 +75,18 @@ class PrayerTimesService
     {
         $locations = $this->locationRepository->get($countrySlug, $citySlug, $townSlug);
 
+        $result = [];
         foreach ($locations as $location) {
             $data = $this->getData($location);
             if (!empty($data)) {
-                $this->data[$location->id] = [
+                $result[$location->id] = [
                     'location'  =>  $location,
                     'data'      =>  $data
                 ];
             }
         }
 
-        return $this->data;
+        return $result;
     }
 
     /**

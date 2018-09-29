@@ -32,7 +32,7 @@ $cities = $locationRepository->getCities($turkey);
 /**
  * Return the towns of city
  */
-$towns = $locationRepository->getTowns($cities->slice(0,2));
+//$towns = $locationRepository->getTowns($cities->slice(0,2));
 
 
 $prayerTimesService = new PrayerTimesService();
