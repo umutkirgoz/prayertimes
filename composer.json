@@ -3,6 +3,7 @@
     "description": "Fetches the prayer times",
     "keywords": ["muslim", "prayer", "Turkey"],
     "license": "MIT",
+    "version": "v1.1",
     "authors": [
         {
             "name": "Umut KIRGÖZ",
@@ -27,20 +28,15 @@
             "UmutKirgoz\\PrayerTimes\\": "src/"
         },
         "files": [
-            "src/Helpers/helpers.php"
+            "src/Helpers/Helpers.php"
         ]
     },
     "scripts": {
         "phpcs-src": "./vendor/bin/phpcs --standard=PSR2 --exclude=PSR2.Classes.PropertyDeclaration,Generic.Files.LineLength src/",
-        "phpcs-test": "./vendor/bin/phpcs --standard=PSR2 --exclude=PSR2.Classes.PropertyDeclaration,PSR1.Classes.ClassDeclaration,Generic.Files.LineLength,PSR1.Methods.CamelCapsMethodName tests/",
         "phpmd": "./vendor/bin/phpmd src/ text ./build/phpmd.xml",
-        "phpunit-coverage": "php -d memory_limit=256M ./vendor/bin/phpunit --coverage-text --testsuite UnitTests",
-
         "test-all": [
             "@phpcs-src",
-            "@phpcs-test",
             "@phpmd",
-            "@phpunit-coverage"
         ]
     }
 }
