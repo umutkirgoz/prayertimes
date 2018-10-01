@@ -36,7 +36,7 @@
         "phpmd": "./vendor/bin/phpmd src/ text ./build/phpmd.xml",
         "test-all": [
             "@phpcs-src",
-            "@phpmd",
+            "@phpmd"
         ]
     }
 }
