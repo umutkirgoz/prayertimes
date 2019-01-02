@@ -46,11 +46,16 @@ $prayerTimesService = new PrayerTimesService();
 /**
  * Returns all prayer times of the city's each town
  */
-$prayerTimes = $prayerTimesService->get('turkiye', $cities->slice(0,1)->first()->slug);
+//$prayerTimes = $prayerTimesService->get('turkiye', $cities->slice(0,1)->first()->slug);
 
 /**
  * Return the prayer times of given town
  */
-//$prayerTimes = $prayerTimesService->get('turkiye', 'amasya', 'merzifon');
+try {
+    $prayerTimes = $prayerTimesService->get('turkiye', 'amasya', 'merzifon');
+} catch (\Exception $e) {
+    dd($e);
+}
+
 
 dd($prayerTimes);
