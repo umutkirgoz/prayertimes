@@ -1,6 +1,8 @@
 <?php
 namespace UmutKirgoz\PrayerTimes\Repositories;
 
+use Illuminate\Support\Collection;
+
 /**
  * Manages the locations
  * Class LocationsRepository
@@ -46,7 +48,7 @@ class LocationsRepository
 
     /**
      * Returns all countries
-     * @return static
+     * @return Collection
      */
     public function getCountries()
     {
@@ -79,7 +81,7 @@ class LocationsRepository
      * Returns the towns of given cities
      * @param Collection $cities
      * @param string|null $townSlug
-     * @return static
+     * @return Collection
      */
     public function getTowns($cities, $townSlug = null)
     {
