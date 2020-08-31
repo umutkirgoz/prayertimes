@@ -92,8 +92,9 @@ class PrayerTimesService
     /**
      * @param $location
      * @return array
+     * @throws \Exception
      */
-    private function getData($location)
+    public function getData($location)
     {
         $content = $this->prayerTimesRepository->get($location);
 
