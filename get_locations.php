@@ -10,6 +10,8 @@ ini_set('display_errors', 1);
 
 $crawlerService = new LocationsCrawlerService();
 
+//dd($crawlerService->getCities(166));
+
 $crawlerService->storeLocations();
 exit;
 

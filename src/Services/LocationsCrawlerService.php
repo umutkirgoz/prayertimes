@@ -16,7 +16,7 @@ class LocationsCrawlerService
 
     public function __construct()
     {
-        $this->locationsDb = dirname(__FILE__)  . '/../Db/locations-new.json';
+        $this->locationsDb = dirname(__FILE__)  . '/../Db/locations.json';
 
         $this->httpClient = new Client([
             'headers'   =>  [
@@ -32,15 +32,10 @@ class LocationsCrawlerService
 
         foreach ($countries as $country) {
             $data[] = $country;
-
-
-
             $cities = $this->getCities($country['id']);
-            if ($country['id'] == 166) {
-                dd($country, $cities);
-            }
+
             foreach ($cities as $city) {
-                $hasTown = $city['has_town'];
+                $hasTown = $city['has_towns'];
                 unset($city['has_town']);
                 $data[] = $city;
                 if ($hasTown === false) {
@@ -90,21 +85,30 @@ class LocationsCrawlerService
 
         $data = json_decode($content);
 
-        if (!isset($data->StateList)) {
-            throw new \Exception('Cannot access data');
+        $nameProp = 'IlceAdi';
+        $idProp = 'IlceID';
+        $type = 'town';
+        $dataProp = 'StateRegionList';
+        $hasTowns = false;
+        if ($data->HasStateList === true) {
+            $nameProp = 'SehirAdi';
+            $idProp = 'SehirID';
+            $type = 'city';
+            $dataProp = 'StateList';
+            $hasTowns = true;
         }
 
         $resultSet = [];
-        foreach ($data->StateList as $state) {
-            $name = $state->SehirAdi;
+        foreach ($data->$dataProp as $item) {
+            $name = $item->$nameProp;
             $slug = StaticStringy::slugify($name);
             $resultSet[] = [
-                'id'    =>  $state->SehirID,
+                'id'    =>  $item->$idProp,
                 'parent_id'    =>  $countryId,
-                'type' =>  'city',
+                'type' =>  $type,
                 'name'    =>  $name,
                 'slug'    =>  $slug,
-                'has_town' =>  (isset($data->HasStateList) && $data->HasStateList === true)
+                'has_towns' =>  $hasTowns,
             ];
         }
         return $resultSet;
