@@ -43,7 +43,7 @@ class LocationsRepository
 
         $towns = $this->getTowns($cities, $townSlug);
 
-        return $towns;
+        return $towns->count() ? $towns : $cities;
     }
 
     /**

@@ -87,13 +87,12 @@ class LocationsCrawlerService
 
         $nameProp = 'IlceAdi';
         $idProp = 'IlceID';
-        $type = 'town';
+        $type = 'city';
         $dataProp = 'StateRegionList';
         $hasTowns = false;
         if ($data->HasStateList === true) {
             $nameProp = 'SehirAdi';
             $idProp = 'SehirID';
-            $type = 'city';
             $dataProp = 'StateList';
             $hasTowns = true;
         }
