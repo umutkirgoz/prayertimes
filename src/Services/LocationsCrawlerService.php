@@ -25,6 +25,7 @@ class LocationsCrawlerService
         ]);
     }
 
+
     /**
      * @throws \Exception
      */
@@ -59,6 +60,7 @@ class LocationsCrawlerService
         $this->countries = $this->getCountries();
     }
 
+
     public function getCountries(): array
     {
         $url = "https://namazvakitleri.diyanet.gov.tr/tr-TR";
@@ -80,6 +82,7 @@ class LocationsCrawlerService
             ];
         });
     }
+
 
     /**
      * @throws \Exception
@@ -164,6 +167,7 @@ class LocationsCrawlerService
             throw new \Exception('Crawl failed', 500);
         }
     }
+
 
     private function getRandomUserAgent(): string
     {

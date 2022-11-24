@@ -77,6 +77,7 @@ class LocationsRepository
         return (null === $citySlug) ? $cities->where('parent_id', $country->id) : $cities->where('slug', $citySlug);
     }
 
+
     public function getCityTowns($city): Collection
     {
         return $this->data->where('type', 'town')->where('parent_id', $city->id);
