@@ -3,7 +3,7 @@
     "description": "Fetches the prayer times",
     "keywords": ["muslim", "prayer", "Turkey"],
     "license": "MIT",
-    "version": "v1.2",
+    "version": "1.3.6",
     "authors": [
         {
             "name": "Umut KIRGÖZ",
@@ -13,15 +13,16 @@
     "type": "library",
     "require": {
 		"php": ">=7.0",
+        "ext-json": "*",
         "illuminate/support": "5.1.*",
         "guzzlehttp/guzzle": "~6.0",
         "symfony/dom-crawler": "2.7.*",
-        "symfony/var-dumper": "2.7.*"
+        "symfony/var-dumper": "2.7.*",
+        "campo/random-user-agent": "^1.3"
     },    
     "require-dev": {
-		    "phpunit/phpunit": "6.*",
-        "squizlabs/php_codesniffer": "3.*",
-        "phpmd/phpmd": "@stable"
+        "phpunit/phpunit": "6.*",
+        "squizlabs/php_codesniffer": "3.*"
     },
     "autoload": {
         "psr-4": {
@@ -32,11 +33,6 @@
         ]
     },
     "scripts": {
-        "phpcs-src": "./vendor/bin/phpcs --standard=PSR2 --exclude=PSR2.Classes.PropertyDeclaration,Generic.Files.LineLength src/",
-        "phpmd": "./vendor/bin/phpmd src/ text ./build/phpmd.xml",
-        "test-all": [
-            "@phpcs-src",
-            "@phpmd"
-        ]
+        "phpcs-src": "./vendor/bin/phpcs --standard=PSR2 --exclude=PSR2.Classes.PropertyDeclaration,Generic.Files.LineLength src/"
     }
 }

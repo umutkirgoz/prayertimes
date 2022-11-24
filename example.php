@@ -53,6 +53,7 @@ $prayerTimesService = new PrayerTimesService();
  */
 try {
     $prayerTimes = $prayerTimesService->get('turkiye', 'amasya', 'merzifon');
+    //$prayerTimes = $prayerTimesService->get('afganistan', 'afganistan', 'chandler');
 } catch (\Exception $e) {
     dd($e);
 }

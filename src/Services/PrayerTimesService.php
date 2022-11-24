@@ -71,7 +71,7 @@ class PrayerTimesService
      * @param string|null $townSlug
      * @return array
      */
-    public function get($countrySlug, $citySlug = null, $townSlug = null)
+    public function get($countrySlug, string $citySlug = null, string $townSlug = null): array
     {
         $locations = $this->locationRepository->get($countrySlug, $citySlug, $townSlug);
 
@@ -92,47 +92,47 @@ class PrayerTimesService
     /**
      * @param $location
      * @return array
+     * @throws \Exception
      */
-    private function getData($location)
+    public function getData($location): array
     {
         $content = $this->prayerTimesRepository->get($location);
 
-        $datas = $this->parse($content);
+        $data = $this->parse($content);
 
-        return $this->transformData($datas);
+        return $this->transformData($data);
     }
 
     /**
      * @param $content
      * @return array
      */
-    private function parse($content)
+    private function parse($content): array
     {
         $crawler = new Crawler($content);
 
-        $data = $crawler->filterXPath('//*[@id="tab-1"]/div/table/tbody/tr')->each(function (Crawler $node) {
+        return $crawler->filterXPath('//*[@id="tab-1"]/div/table/tbody/tr')->each(function (Crawler $node) {
             return $node->filterXPath('//*/td')->each(function (Crawler $node) {
                 return $node->text();
             });
         });
-
-        return $data;
     }
 
     /**
-     * @param $datas
+     * @param $data
      * @return array
+     * @throws \Exception
      */
-    private function transformData($datas)
+    private function transformData($data): array
     {
         $result = [];
 
-        foreach ($datas as $data) {
+        foreach ($data as $datum) {
             $dayData = [];
-            for ($i = 1; $i < count($data); $i++) {
-                $dayData[$this->dataMap[$i]] = $data[$i];
+            for ($i = 1; $i < count($datum); $i++) {
+                $dayData[$this->dataMap[$i]] = $datum[$i];
             }
-            $dayDate = $this->getDate($data);
+            $dayDate = $this->getDate($datum);
 
             $result[$dayDate] = $dayData;
         }
@@ -142,15 +142,16 @@ class PrayerTimesService
     /**
      * @param $data
      * @return string
+     * @throws \Exception
      */
-    private function getDate($data)
+    private function getDate($data): string
     {
         try {
             $parts = explode(' ', $data[0]);
             $month = $this->monthMap[$parts[1]];
             return sprintf('%s-%s-%s', $parts[2], $month, $parts[0]);
         } catch (\Exception $e) {
-            dd('Invalid Date');
+            throw new \Exception('Invalid Date');
         }
     }
 }
