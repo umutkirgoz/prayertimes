@@ -35,7 +35,7 @@ class LocationsRepository
      * @param string|null $townSlug
      * @return Collection
      */
-    public function get($countrySlug, $citySlug = null, $townSlug = null)
+    public function get(string $countrySlug, string $citySlug = null, string $townSlug = null): Collection
     {
         $country = $this->getCountry($countrySlug);
 
@@ -50,7 +50,7 @@ class LocationsRepository
      * Returns all countries
      * @return Collection
      */
-    public function getCountries()
+    public function getCountries(): Collection
     {
         return $this->data->where('type', 'country');
     }
@@ -60,7 +60,7 @@ class LocationsRepository
      * @param string $countrySlug
      * @return \stdClass
      */
-    public function getCountry($countrySlug)
+    public function getCountry(string $countrySlug): \stdClass
     {
         return $this->data->where('type', 'country')->where('slug', $countrySlug)->first();
     }
@@ -68,16 +68,17 @@ class LocationsRepository
     /**
      * Returns the cities of given country
      * @param \stdClass $country
-     * @param string $citySlug
+     * @param string|null $citySlug
      * @return Collection
      */
-    public function getCities($country, $citySlug = null)
+    public function getCities(\stdClass $country, string $citySlug = null): Collection
     {
         $cities = $this->data->where('type', 'city');
         return (null === $citySlug) ? $cities->where('parent_id', $country->id) : $cities->where('slug', $citySlug);
     }
 
-    public function getCityTowns($city)
+
+    public function getCityTowns($city): Collection
     {
         return $this->data->where('type', 'town')->where('parent_id', $city->id);
     }
@@ -88,7 +89,7 @@ class LocationsRepository
      * @param string|null $townSlug
      * @return Collection
      */
-    public function getTowns($cities, $townSlug = null)
+    public function getTowns(Collection $cities, string $townSlug = null): Collection
     {
         $cityIds = $cities->pluck('id')->toArray();
         $towns = $this->data->where('type', 'town');

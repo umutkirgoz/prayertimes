@@ -25,6 +25,10 @@ class LocationsCrawlerService
         ]);
     }
 
+
+    /**
+     * @throws \Exception
+     */
     public function storeLocations()
     {
         $data = [];
@@ -56,7 +60,8 @@ class LocationsCrawlerService
         $this->countries = $this->getCountries();
     }
 
-    public function getCountries()
+
+    public function getCountries(): array
     {
         $url = "https://namazvakitleri.diyanet.gov.tr/tr-TR";
 
@@ -64,7 +69,8 @@ class LocationsCrawlerService
 
         $crawler = new Crawler($content);
 
-        return $crawler->filterXPath('//select[contains(concat(" ",normalize-space(@class)," ")," country-select ")]//option')->each(function (Crawler $node) {
+        $xPath = '//select[contains(concat(" ",normalize-space(@class)," ")," country-select ")]//option';
+        return $crawler->filterXPath($xPath)->each(function (Crawler $node) {
             $name = $node->text();
             $slug = StaticStringy::slugify($name);
             return [
@@ -77,9 +83,14 @@ class LocationsCrawlerService
         });
     }
 
+
+    /**
+     * @throws \Exception
+     */
     public function getCities($countryId)
     {
-        $url = 'https://namazvakitleri.diyanet.gov.tr/tr-TR/home/GetRegList?ChangeType=country&CountryId='.$countryId.'&Culture=tr-TR';
+        $url = 'https://namazvakitleri.diyanet.gov.tr/tr-TR/home/GetRegList?ChangeType=country&CountryId=' .
+            $countryId . '&Culture=tr-TR';
 
         $content = $this->get($url);
 
@@ -113,7 +124,7 @@ class LocationsCrawlerService
         return $resultSet;
     }
 
-    public function getTowns($countryId, $cityId)
+    public function getTowns($countryId, $cityId): array
     {
         $url = "https://namazvakitleri.diyanet.gov.tr/tr-TR/home/GetRegList?ChangeType=state&CountryId=".$countryId
             ."&Culture=tr-TR&StateId=" . $cityId;
@@ -145,8 +156,9 @@ class LocationsCrawlerService
      * Returns the contents of given URL
      * @param string $url
      * @return string
+     * @throws \Exception
      */
-    public function get($url)
+    public function get($url): string
     {
         try {
             $response = $this->httpClient->get($url);
@@ -156,16 +168,9 @@ class LocationsCrawlerService
         }
     }
 
-    private function getRandomUserAgent()
-    {
-        $userAgents = [
-            'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0',
-            'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36',
-            'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_6; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Flock/3.5.3.4628 Chrome/7.0.517.450 Safari/534.7',
-            'Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30',
-            'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 7.0; InfoPath.3; .NET CLR 3.1.40767; Trident/6.0; en-IN)',
-        ];
 
-        return $userAgents[array_rand($userAgents)];
+    private function getRandomUserAgent(): string
+    {
+        return \Campo\UserAgent::random();
     }
 }

@@ -3,4 +3,4 @@ composer.lock
 /build
 !build/phpcs.xml
 !build/phpmd.xml
-.idea
+/**/.idea/*
