@@ -3,7 +3,7 @@
     "description": "Fetches the prayer times",
     "keywords": ["muslim", "prayer", "Turkey"],
     "license": "MIT",
-    "version": "1.3.6",
+    "version": "1.3.7",
     "authors": [
         {
             "name": "Umut KIRGÖZ",
