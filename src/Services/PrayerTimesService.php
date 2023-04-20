@@ -28,6 +28,7 @@ class PrayerTimesService
      */
     private $dataMap = [
         'date',
+        'hicri',
         'imsak',
         'gunes',
         'ogle',
